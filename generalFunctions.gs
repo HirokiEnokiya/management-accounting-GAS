@@ -1,3 +1,6 @@
+/**
+ * 行列を転置する関数
+ */
 function transposeArray(inputArray) {
   var numRows = inputArray.length;
   var numCols = inputArray[0].length;
@@ -51,8 +54,6 @@ function getWeekNumber(){
   }else{
     weekNumer = Math.floor((diffDays/7)) + 2;
   }
-
-  console.log(weekNumer);
 
   return weekNumer;
 }
