@@ -43,12 +43,12 @@ function calcFirstMonday() {
 /**
  * 今日が第何週か求める関数
  * 月曜始まり
+ * @param {Date} date
  */
-function getWeekNumber(){
-  const today = new Date();
+function getWeekNumber(date){
   const firstMonday = calcFirstMonday();
   let weekNumer;
-  const diffDays = today.getDate() - firstMonday.getDate();
+  const diffDays = date.getDate() - firstMonday.getDate();
   if(diffDays < 0){
     weekNumer = 1;
   }else{

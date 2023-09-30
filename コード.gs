@@ -16,24 +16,40 @@ function initialize(){
 function resetSheets(){
   const spreadSheet = SpreadsheetApp.getActiveSpreadsheet();
   const sheets = spreadSheet.getSheets();
+  const weekNumber = updateWeekNumber();
   for(sheet of sheets){
     const sheetName = sheet.getName();
     if(sheetName !== 'template' && sheetName !== '設定' && sheetName !== 'メンテナンス'){
-      sheet.getRange(4,3,sheet.getLastRow()-3,sheet.getLastColumn()-2).clearContent();
-      // 数式をセット
-      sheet.getRange('C4').setFormula(`=ARRAYFORMULA(INDIRECT('設定'!$B$5&4&":"&'設定'!$B$5&146) - G4:G146)`);
-      sheet.getRange('E4').setFormula(`=ARRAYFORMULA(INDIRECT('設定'!$B$5&4&":"&'設定'!$B$5&146) - INDIRECT('設定'!$B$7&4&":"&'設定'!$B$7&146))`);
-      sheet.getRange('M4').setFormula(`=ARRAYFORMULA(G4:G146)`);
-      sheet.getRange('S4').setFormula(`=ARRAYFORMULA(M4:M146)`);
-      sheet.getRange('Y4').setFormula(`=ARRAYFORMULA(S4:S146)`);
-      sheet.getRange('AE4').setFormula(`=ARRAYFORMULA(Y4:Y146)`);
-      sheet.getRange('AK4').setFormula(`=ARRAYFORMULA(AE4:AE146)`);
-      sheet.getRange('G1').setFormula(`='設定'!B9`);
-      sheet.getRange('M1').setFormula(`='設定'!B10`);
-      sheet.getRange('S1').setFormula(`='設定'!B11`);
-      sheet.getRange('Y1').setFormula(`='設定'!B12`);
-      sheet.getRange('AE1').setFormula(`='設定'!B13`);
-      sheet.getRange('AK1').setFormula(`='設定'!B14`);
+      if(weekNumber === 1){
+        sheet.getRange(4,3,sheet.getLastRow()-3,sheet.getLastColumn()-2).clearContent();
+        // 0で埋める
+        const zeroArray = new Array(143).fill([0,0,0,0]);
+        sheet.getRange(4,3,sheet.getLastRow()-3,4).setValues(zeroArray);
+        // 数式をセット
+        sheet.getRange('G1').setFormula(`='設定'!B9`);
+        sheet.getRange('M1').setFormula(`='設定'!B10`);
+        sheet.getRange('S1').setFormula(`='設定'!B11`);
+        sheet.getRange('Y1').setFormula(`='設定'!B12`);
+        sheet.getRange('AE1').setFormula(`='設定'!B13`);
+        SpreadsheetApp.flush();
+      }else if(weekNumber === 2){
+        sheet.getRange(4,3,sheet.getLastRow()-3,4).clearContent();
+        // 0で埋める
+        const zeroArray = new Array(143).fill([0,0]);
+        sheet.getRange(4,5,sheet.getLastRow()-3,2).setValues(zeroArray);
+        // 数式をセット
+        sheet.getRange('C4').setFormula(`=ARRAYFORMULA(INDIRECT('設定'!$B$5&4&":"&'設定'!$B$5&146) - G4:G146)`);
+        sheet.getRange('D4').setFormula(`=ARRAYFORMULA(INDIRECT('設定'!$C$5&4&":"&'設定'!$C$5&146) - J4:J146)`);
+      }
+      else{
+        // 数式をセット
+        sheet.getRange(4,3,sheet.getLastRow()-3,4).clearContent();
+        sheet.getRange('C4').setFormula(`=ARRAYFORMULA(INDIRECT('設定'!$B$5&4&":"&'設定'!$B$5&146) - G4:G146)`);
+        sheet.getRange('D4').setFormula(`=ARRAYFORMULA(INDIRECT('設定'!$C$5&4&":"&'設定'!$C$5&146) - J4:J146)`);
+        sheet.getRange('E4').setFormula(`=ARRAYFORMULA(INDIRECT('設定'!$B$5&4&":"&'設定'!$B$5&146) - INDIRECT('設定'!$B$7&4&":"&'設定'!$B$7&146))`);
+        sheet.getRange('F4').setFormula(`=ARRAYFORMULA(INDIRECT('設定'!$C$5&4&":"&'設定'!$C$5&146) - INDIRECT('設定'!$C$7&4&":"&'設定'!$C$7&146))`);
+
+      }
     }
   }
 }
@@ -42,11 +58,7 @@ function resetSheets(){
  * 起動時に実行する関数
  */
 function onOpenFunction(){
-  const weekNumber = updateWeekNumber();
-  if(weekNumber === 1){
-    resetSheets();
-    SpreadsheetApp.flush();
-  }
+  resetSheets();
   updateThisMonthProspectData();
   updateNextMonthProspectData();
 
@@ -61,7 +73,10 @@ function updateThisMonthProspectData(){
   const spreadSheet = SpreadsheetApp.getActiveSpreadsheet();
   const settingSheet = spreadSheet.getSheetByName('設定');
   const weekNumber = updateWeekNumber();
-  const nextMonthTargetColumnNum = getThisMonthTargetColumnNum(weekNumber);
+  const thisMonthTargetColumnNum = getThisMonthTargetColumnNum(weekNumber);
+  // 参照する列の変更
+  settingSheet.getRange('B4').setValue(thisMonthTargetColumnNum);
+
   const officeName = settingSheet.getRange('B1').getValue();
   const budgetControlSpreadSheetId = getBudgetControlSpreadSheetId();
   // 予実管理シート
@@ -83,7 +98,7 @@ function updateThisMonthProspectData(){
         const sourceSheet = budgetControlSheet.getSheetByName(shipper);
         const columnData = sourceSheet.getRange(4,sourceTargetColumnNum,sourceSheet.getLastRow()-3,1).getDisplayValues();
 
-        sheet.getRange(4,nextMonthTargetColumnNum,columnData.length,1).setValues(columnData);
+        sheet.getRange(4,thisMonthTargetColumnNum,columnData.length,1).setValues(columnData);
       }catch(e){
         console.log(e);
         console.log(`${shipper}のシートが見つかりません`);
@@ -161,6 +176,8 @@ function getBudgetControlSpreadSheetId(){
 //   const weekNumber = updateWeekNumber();
 //   const officeName = settingSheet.getRange('B1').getValue();
 //   const targetColumnNum = getThisMonthTargetColumnNum(weekNumber);
+//   // 参照する列の変更
+//   settingSheet.getRange('B4').setValue(targetColumnNum);
 
 //   // 月初めならばシートをリセットする
 //   if(weekNumber === 1){
@@ -181,8 +198,6 @@ function getBudgetControlSpreadSheetId(){
 
 //   }
 
-//   // 参照する列の変更
-//   settingSheet.getRange('B4').setValue(targetColumnNum);
 
 // }
 

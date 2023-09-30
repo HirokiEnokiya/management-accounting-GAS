@@ -6,12 +6,12 @@ function updateWeekNumber(){
   const spreadSheet = SpreadsheetApp.getActiveSpreadsheet();
   const sheet = spreadSheet.getSheetByName('設定');
 
-  const today = new Date();
+  const today = new Date("2023/10/09");
   // デバッグ用
   // const today = new Date();
   let year = today.getFullYear();
   const month = today.getMonth() + 1;
-  const weekNumber = getWeekNumber();
+  const weekNumber = getWeekNumber(today);
 
   sheet.getRange('B2').setValue(`'${year.toString().substring(2)}年${month}月${weekNumber}週目`);
   sheet.getRange('B14').setValue(year);
