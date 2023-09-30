@@ -6,7 +6,7 @@ function updateWeekNumber(){
   const spreadSheet = SpreadsheetApp.getActiveSpreadsheet();
   const sheet = spreadSheet.getSheetByName('設定');
 
-  const today = new Date("2023/10/09");
+  const today = new Date();
   // デバッグ用
   // const today = new Date();
   let year = today.getFullYear();
