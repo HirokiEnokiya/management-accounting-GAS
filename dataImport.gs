@@ -29,8 +29,8 @@ function getOfficeShipperList(){
  * @return {Object} shippersData
  */
 function importData(officeName){
-  const SOURCE_SS_ID = PropertiesService.getScriptProperties().getProperty('SOURCE_SS_ID');
-  const sourceDataSpreadSheet = SpreadsheetApp.openById(SOURCE_SS_ID);
+  const controlSpreadSheetId = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('設定').getRange('B16').getValue();
+  const sourceDataSpreadSheet = SpreadsheetApp.openById(controlSpreadSheetId);
   const sourceSheet = sourceDataSpreadSheet.getSheetByName(officeName);
   
   // 取得したデータをオブジェクトにする
