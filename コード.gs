@@ -7,6 +7,7 @@ function initialize(){
       .forSpreadsheet(SpreadsheetApp.getActiveSpreadsheet())
       .onOpen()  //スプレッドシートを開いた時
       .create();
+  Browser.msgBox('初期設定が完了しました。再読み込みをしてください。');
   
 }
 
@@ -61,6 +62,7 @@ function onOpenFunction(){
   resetSheets();
   updateThisMonthProspectData();
   updateNextMonthProspectData();
+  recordLatestUpdate();
 
 }
 
