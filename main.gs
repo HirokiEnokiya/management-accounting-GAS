@@ -65,6 +65,19 @@ function adjustSheetsToWeekNumber(today){
         sheet.getRange('F4').setFormula(`=ARRAYFORMULA(INDIRECT('設定'!$C$5&4&":"&'設定'!$C$5&146) - INDIRECT('設定'!$C$7&4&":"&'設定'!$C$7&146))`);
 
       }
+
+      // 予算比の数式
+      sheet.getRange('I4').setFormula(`=ARRAYFORMULA(G4:G146-H4:H146)`);
+      sheet.getRange('L4').setFormula(`=ARRAYFORMULA(J4:J146-K4:K146)`);
+      sheet.getRange('O4').setFormula(`=ARRAYFORMULA(M4:M146-N4:N146)`);
+      sheet.getRange('R4').setFormula(`=ARRAYFORMULA(P4:P146-Q4:Q146)`);
+      sheet.getRange('U4').setFormula(`=ARRAYFORMULA(S4:S146-T4:T146)`);
+      sheet.getRange('X4').setFormula(`=ARRAYFORMULA(V4:V146-W4:W146)`);
+      sheet.getRange('AA4').setFormula(`=ARRAYFORMULA(Y4:Y146-Z4:Z146)`);
+      sheet.getRange('AD4').setFormula(`=ARRAYFORMULA(AB4:AB146-AC4:AC146)`);
+      sheet.getRange('AF4').setFormula(`=ARRAYFORMULA(AD4:AD146-AE4:AE146)`);
+      sheet.getRange('AJ4').setFormula(`=ARRAYFORMULA(AH4:AH146-AI4:AI146)`);
+      
     }
   }
 }
