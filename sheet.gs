@@ -26,7 +26,11 @@ function makeSheet(shipperList){
 function deleteSheets(sheetNames){
   const spreadSheet = SpreadsheetApp.getActiveSpreadsheet();
   for(sheetName of sheetNames){
-    const sheet = spreadSheet.getSheetByName(sheetName);
-    spreadSheet.deleteSheet(sheet);
+    try{
+      const sheet = spreadSheet.getSheetByName(sheetName);
+      spreadSheet.deleteSheet(sheet);
+    }catch{
+      console.log(`${sheetName}シートが存在しません`);
+    }
   }
 }

@@ -14,17 +14,17 @@ function getColumnNum(){
   return columnNum;
 }
 
-/**
- * n月第n週を表記する関数
- */
-function showWK(){
-  const spreadSheet = SpreadsheetApp.getActiveSpreadsheet();
-  const sheet = spreadSheet.getSheetByName('設定');
+// /**
+//  * n月第n週を表記する関数
+//  */
+// function showWK(){
+//   const spreadSheet = SpreadsheetApp.getActiveSpreadsheet();
+//   const sheet = spreadSheet.getSheetByName('設定');
 
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth() + 1;
-  const weekNumber = getWeekNumber();
+//   const today = new Date();
+//   const year = today.getFullYear();
+//   const month = today.getMonth() + 1;
+//   const weekNumber = getWeekNumber();
 
-  sheet.getRange('A1').setValue(`${year}年 ${month}月 第${weekNumber}週`);
-}
+//   sheet.getRange('A1').setValue(`${year}年 ${month}月 第${weekNumber}週`);
+// }
